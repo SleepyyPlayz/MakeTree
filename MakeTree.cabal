@@ -28,7 +28,7 @@ library
       Parsing.PhonyParsing
       Parsing.TargetParsing
       Parsing.VarParsing
-      TargetTreeGeneration
+      TargetForestGeneration
       Visualize
   other-modules:
       Paths_MakeTree

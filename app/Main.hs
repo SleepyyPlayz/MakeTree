@@ -1,18 +1,21 @@
 module Main (main) where
 
--- import System.Directory (doesFileExist)
+import System.Directory (doesFileExist)
 -- import System.Environment (getArgs)
 
 -- import Lib
 
 main :: IO ()
 main = do
-    putStrLn "Enter a file name : "
-    inputFileName <- getLine
+    putStrLn "Enter the filepath of a VALID Makefile (must be valid):"
+    filePath <- getLine
 
-    fileContent <- readFile inputFileName
+    -- TODO: check if it's a valid Makefile
+    fileExists <- doesFileExist filePath
 
-    putStrLn "Contents of the file : "
-    putStrLn fileContent
-
-    putStrLn "---------- EOF ----------"
+    if not fileExists
+    then putStrLn "Invalid file path. Please try again."
+    else do
+        fileContent <- readFile filePath
+        putStrLn "Contents of the file : "
+        putStrLn fileContent
