@@ -28,7 +28,8 @@ library
       Parsing.PhonyParsing
       Parsing.TargetParsing
       Parsing.VarParsing
-      Preprocessing.MakefilePreprocessing
+      TargetTreeGeneration
+      Visualize
   other-modules:
       Paths_MakeTree
   hs-source-dirs:

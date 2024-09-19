@@ -13,4 +13,4 @@ data VarMapping = Var String String
 -- | via readFile from System.IO.
 -- | Returns [] when there are no variable mappings in the Makefile.
 getVarMappings :: String -> [VarMapping]
-getVarMappings _ = undefined  -- TODO: implement
+getVarMappings _ = [Var "TODO" "TODO"]  -- TODO: implement
