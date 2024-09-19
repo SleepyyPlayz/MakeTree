@@ -5,8 +5,8 @@ module Parsing.PhonyParsing (
 import Data.List (isPrefixOf)
 
 -- | Returns the names of all the .PHONY targets in the Makefile, given a syntactically
--- | correct Makefile that was read into a single String via readFile from System.IO.
--- | Returns [] when there are no .PHONY targets.
+-- correct Makefile that was read into a single String via readFile from System.IO.
+-- Returns [] when there are no .PHONY targets.
 getPhonyTargets :: String -> [String]
 getPhonyTargets fileContent = 
     let 

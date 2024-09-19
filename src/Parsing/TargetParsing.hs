@@ -11,9 +11,9 @@ import Data.List (isInfixOf)
 data Target = Target { name :: String, deps :: [String] } deriving (Show)
 
 -- | Returns all the targets and their dependencies in the Makefile, given 
--- | a syntactically correct Makefile that was read into a single String via
--- | readFile from System.IO.
--- | Returns [] when there are no targets.
+-- a syntactically correct Makefile that was read into a single String via
+-- readFile from System.IO.
+-- Returns [] when there are no targets.
 -- IMPORTANT NOTES:
 --     Does not currently support usage of $(variables) and % in the names or
 --     dependencies of the targets. Those features are to be implemented later.
@@ -36,7 +36,7 @@ getAllTargets fileContent =
     extractDependencies [] targetLines
 
 -- | Helper function that returns whether a makefile's non-tabbed line is a line
--- | that defines a target (with or without its dependentices).
+-- that defines a target (with or without its dependentices).
 -- Note that sometimes, there are lines where we create temporary variable bindings
 -- for a target specifically, that can look like:
 --     target: var = value
@@ -47,8 +47,8 @@ isTargetLine line = (length firstToken >= 2) && (last firstToken == ':')
     where firstToken = head (words line)
 
 -- | Recursive function that extracts targets & their dependencies in a LINE-BY-LINE
--- | fasion, given all targets already extrapolated and the List of all lines 
--- | that contains a target name. (This allows for tail recursion.)
+-- fasion, given all targets already extrapolated and the List of all lines 
+-- that contains a target name. (This allows for tail recursion.)
 -- Also keep in mind the case where there are temporary variable bindings for a target.
 -- In this case the target might still need to be added, but no dependencies shoule be
 -- added.
