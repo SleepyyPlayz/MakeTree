@@ -1,0 +1,67 @@
+cabal-version: 1.12
+
+-- This file has been generated from package.yaml by hpack version 0.37.0.
+--
+-- see: https://github.com/sol/hpack
+
+name:           MakeTree
+version:        0.1.0.0
+description:    Please see the README on GitHub at <https://github.com/SleepyyPlayz/MakeTree#readme>
+homepage:       https://github.com/SleepyyPlayz/MakeTree#readme
+bug-reports:    https://github.com/SleepyyPlayz/MakeTree/issues
+author:         Chris Jiang
+maintainer:     Chris Jiang (please only contact through GitHub)
+copyright:      2024 Chris Jiang
+license:        GPL-3.0
+license-file:   LICENSE
+build-type:     Simple
+extra-source-files:
+    README.md
+    CHANGELOG.md
+
+source-repository head
+  type: git
+  location: https://github.com/SleepyyPlayz/MakeTree
+
+library
+  exposed-modules:
+      Parsing.PhonyParsing
+      Parsing.TargetParsing
+      Parsing.VarParsing
+      Preprocessing.MakefilePreprocessing
+  other-modules:
+      Paths_MakeTree
+  hs-source-dirs:
+      src
+  ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints
+  build-depends:
+      base >=4.7 && <5
+    , directory >=1.3.8.5
+  default-language: Haskell2010
+
+executable make-tree
+  main-is: Main.hs
+  other-modules:
+      Paths_MakeTree
+  hs-source-dirs:
+      app
+  ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints -threaded -rtsopts -with-rtsopts=-N
+  build-depends:
+      MakeTree
+    , base >=4.7 && <5
+    , directory >=1.3.8.5
+  default-language: Haskell2010
+
+test-suite make-tree-test
+  type: exitcode-stdio-1.0
+  main-is: Spec.hs
+  other-modules:
+      Paths_MakeTree
+  hs-source-dirs:
+      test
+  ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints -threaded -rtsopts -with-rtsopts=-N
+  build-depends:
+      MakeTree
+    , base >=4.7 && <5
+    , directory >=1.3.8.5
+  default-language: Haskell2010
