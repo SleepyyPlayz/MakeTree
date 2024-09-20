@@ -1,13 +1,12 @@
 module Parsing.TargetParsing (
-    Target,
+    Target, name, deps,  -- data type and access functions
     getAllTargets,
 ) where
 
 import Data.Char (isSpace)
 import Data.List (isInfixOf)
 
--- | Datatype that describes a target, with its dependencies
--- Note: They might not be in any specific order. 
+-- | Datatype that describes a target, with its dependencies (in order).
 data Target = Target { name :: String, deps :: [String] } deriving (Show)
 
 -- | Returns all the targets and their dependencies in the Makefile, given 
@@ -54,13 +53,13 @@ isTargetLine line = (length firstToken >= 2) && (last firstToken == ':')
 -- added.
 extractDependencies :: [Target] -> [String] -> [Target]
 extractDependencies existingTargets [] = existingTargets
-extractDependencies existingTargets (currentLine : remainingLines) = 
+extractDependencies existingTargets (currentLine : remainingLines) =
     let
         -- Precondition: There is guaranteed to be a target name, before a ':'.
         firstToken = head (words currentLine)  -- contains ':' at the end
         targetName = init firstToken           -- removes the ':' character
 
-        -- Tokens after the name of the target, can be empty.
+        -- Tokens after the name of the target (in order), can be empty.
         tokens = tail (words currentLine)
 
         -- Function to check if a line is used to define bindings & not dependencies.
@@ -75,8 +74,8 @@ extractDependencies existingTargets (currentLine : remainingLines) =
             let
                 -- The following is a way to modify one element of a List with "map":
                 modificationFunc :: Target -> Target
-                modificationFunc t = if name t == targetName 
-                    then Target { name = targetName, deps = tokens ++ deps t } 
+                modificationFunc t = if name t == targetName
+                    then Target { name = targetName, deps = deps t ++ tokens }
                     else t
 
                 modifiedTargets = map modificationFunc existingTargets
