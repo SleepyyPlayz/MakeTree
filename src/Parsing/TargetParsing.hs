@@ -13,7 +13,7 @@ data Target = Target { name :: String, deps :: [String] } deriving (Show)
 -- a syntactically correct Makefile that was read into a single String via
 -- readFile from System.IO.
 -- Returns [] when there are no targets.
--- IMPORTANT NOTES:
+-- TODO:
 --     Does not currently support usage of $(variables) and % in the names or
 --     dependencies of the targets. Those features are to be implemented later.
 getAllTargets :: String -> [Target]
