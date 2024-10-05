@@ -5,8 +5,10 @@ module Parsing.VarParsing (
 
 -- import Data.List (isPrefixOf)
 
+
 -- | Datatype that maps a Makefile variable's name to its value
 data VarMapping = Var String String
+
 
 -- | Returns all variable mappings that can be extrapolated from a Makefile, 
 -- given a syntactically correct Makefile that was read into a single String

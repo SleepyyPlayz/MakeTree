@@ -6,8 +6,10 @@ module Parsing.TargetParsing (
 import Data.Char (isSpace)
 import Data.List (isInfixOf)
 
+
 -- | Datatype that describes a target, with its dependencies (in order).
 data Target = Target { name :: String, deps :: [String] } deriving (Show)
+
 
 -- | Returns all the targets and their dependencies in the Makefile, given 
 -- a syntactically correct Makefile that was read into a single String via

@@ -5,6 +5,7 @@ module TargetForestGeneration (
 
 import Parsing.TargetParsing (Target, name, deps)
 
+
 -- | Data structure for representing a SINGLE target dependency tree.
 -- In the format of: TargetNode [name of target] [list of dependencies]
 -- Note that a Makefile can have multiple of such trees!
@@ -18,6 +19,7 @@ getTargetName (TargetNode targetName _) = targetName
 getTargetDeps :: TargetTree -> [TargetTree]
 getTargetDeps (TargetNode _ targetDeps) = targetDeps
 
+
 -- | Returns all the target trees (as a "target forest") of a Makefile, given
 -- all the targets in a List (along with dependencies of each).
 -- IMPORTANT: A target can be the depency of multiple other targets. 
@@ -28,6 +30,7 @@ getTargetForest = generateTargetForest []
 
 -- | Recursive helper function for generateTargetForest, tail-recursively
 -- constructs / generates the target forest. (Assuming no circular dependencies.)
+--
 -- Cases that can happen upon receiving a new target:
 -- 1. Brand new target name (i.e. not anywhere in the forest), add it as a new tree.
 --    But before we do that, look at its dependencies, for each dependency, if it is 
@@ -42,6 +45,7 @@ getTargetForest = generateTargetForest []
 --    (similar to Case 1 and 2, and make sure the trees that are added in are removed
 --    from the existing forest), append these full trees into the existing dependency
 --    list of the non-root nodes in order.
+--
 -- Note that a target name cannot be both be in an existing root node and in one of
 -- the existing dependency nodes, since this situation will be provably impossible due to
 -- how the tree is generated from an empty tree.
