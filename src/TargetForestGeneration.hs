@@ -3,6 +3,8 @@ module TargetForestGeneration (
     getTargetForest,
 ) where
 
+import Data.List (find)
+
 import Parsing.TargetParsing (Target, name, deps)
 
 
@@ -39,7 +41,7 @@ getTargetForest = generateTargetForest []
 --    all its dependencies as in Case 1 (moving trees out of existing forest and under
 --    the relevant dependencies as needed), and then append the completed child nodes
 --    (subtrees for dependencies) to the children of the root of the existing tree.
---    And make sure to keep the order the same (i.e. append at the end).
+--    And make sure to keep the order the same as in the Makefile.
 -- 3. Target name exists as one or more of the non-root nodes (depencies) in any number 
 --    of the trees. In this case, after expanding its dependencies into full trees
 --    (similar to Case 1 and 2, and make sure the trees that are added in are removed
@@ -54,29 +56,47 @@ generateTargetForest currentTrees [] = currentTrees
 generateTargetForest currentTrees (target : targets) =
     let
         targetName = name target
-        targetDeps = deps target  -- dependencies (also target names, i.e. [String])
+        targetDeps = deps target
 
         nameInRoots = any ((== targetName) . getTargetName) currentTrees
-        nameInForest = targetNameInForest currentTrees targetName
+        nameInForest = targetNameInForest targetName currentTrees
 
         -- Generating target tree based on the new target & its dependencies:
-        newTargetSubtrees = [TargetNode depName [] | depName <- targetDeps]  -- TODO: expand trees
+        newTargetSubtrees = [case find ((== depName) . getTargetName) currentTrees of
+                                Just tree -> tree
+                                Nothing   -> TargetNode depName []
+                                | depName <- targetDeps]
         newTargetTree = TargetNode targetName newTargetSubtrees
 
         -- New version of currentTrees (the forest) with the trees that are inserted 
-        -- into newTargetTree removed:
-        newForest = undefined
+        -- into newTargetTree removed: (but before inserting anything)
+        newForest = filter (\tree -> getTargetName tree `notElem` targetDeps) currentTrees 
     in
     if nameInRoots
-    then []  -- TODO
+    then 
+        let
+            -- Helper function to modify one of the trees in newForest:
+            -- Note: we append newTargetSubtrees in the front since targets show up
+            -- in reverse order.
+            modificationFunc :: TargetTree -> TargetTree
+            modificationFunc tree = if getTargetName tree == targetName 
+                then TargetNode targetName (newTargetSubtrees ++ getTargetDeps tree)
+                else tree
+        in
+        generateTargetForest (map modificationFunc newForest) targets  -- Case 2
     else 
-        if nameInForest  -- in forest, but not one of the roots
-        then undefined  -- TODO
-        else []  -- TODO
+        if nameInForest
+        then 
+            let 
+                modificationFunc :: TargetTree -> TargetTree
+                modificationFunc tree = tree  -- TODO: modify deps of all targetName subtrees
+            in 
+            generateTargetForest (map modificationFunc newForest) targets  -- Case 3
+        else generateTargetForest (newTargetTree : newForest) targets  -- Case 1
 
 -- | Helper function for generateTargetForest, returns whether a target is in a forest.
-targetNameInForest :: [TargetTree] -> String -> Bool
-targetNameInForest trees targetName = any (targetNameInTree targetName) trees
+targetNameInForest :: String -> [TargetTree] -> Bool
+targetNameInForest targetName = any (targetNameInTree targetName)
 
 -- | Recursive helper function for targetNameInForest, returns whether a target is in
 -- a single tree.

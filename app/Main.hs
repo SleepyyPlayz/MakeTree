@@ -6,6 +6,8 @@ import System.Directory (doesFileExist)
 -- import Lib
 
 -- | Entrypoint of application.
+-- Note: This program assumes that any input Makefile is syntactically correct;
+-- this can be checked by running "make --debug" in the directory of the Makefile.
 main :: IO ()
 main = do
     putStrLn "Enter the filepath of a VALID Makefile (must be valid):"

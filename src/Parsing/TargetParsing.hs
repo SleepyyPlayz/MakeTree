@@ -14,8 +14,11 @@ data Target = Target { name :: String, deps :: [String] } deriving (Show)
 -- | Returns all the targets and their dependencies in the Makefile, given 
 -- a syntactically correct Makefile that was read into a single String via
 -- readFile from System.IO.
+-- Targets are returned IN REVERSE ORDER of occurrence in file, but the 
+-- dependencies of each target are IN ORDER (which is very important).
 -- Returns [] when there are no targets.
--- TODO:
+--
+-- IMPORTANT TODOs:
 --     Does not currently support usage of $(variables) and % in the names or
 --     dependencies of the targets. Those features are to be implemented later.
 getAllTargets :: String -> [Target]
