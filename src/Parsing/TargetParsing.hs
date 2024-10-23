@@ -8,7 +8,7 @@ import Data.List (isInfixOf)
 
 
 -- | Datatype that describes a target, with its dependencies (in order).
-data Target = Target { name :: String, deps :: [String] } deriving (Show)
+data Target = Target { name :: String, deps :: [String] } deriving (Show, Eq)
 
 
 -- | Returns all the targets and their dependencies in the Makefile, given 

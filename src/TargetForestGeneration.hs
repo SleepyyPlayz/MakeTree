@@ -11,7 +11,7 @@ import Parsing.TargetParsing (Target, name, deps)
 -- | Data structure for representing a SINGLE target dependency tree.
 -- In the format of: TargetNode [name of target] [list of dependencies]
 -- Note that a Makefile can have multiple of such trees!
-data TargetTree = TargetNode String [TargetTree] deriving (Show)
+data TargetTree = TargetNode String [TargetTree] deriving (Show, Eq)
 
 -- | Helper function for TargetTree, returns the name of the target.
 getTargetName :: TargetTree -> String
@@ -63,9 +63,9 @@ generateTargetForest currentTrees (target : targets) =
 
         -- Generating target tree based on the new target & its dependencies:
         newTargetSubtrees = [case find ((== depName) . getTargetName) currentTrees of
-                                Just tree -> tree
-                                Nothing   -> TargetNode depName []
-                                | depName <- targetDeps]
+                                 Just tree -> tree
+                                 Nothing   -> TargetNode depName []
+                                 | depName <- targetDeps]
         newTargetTree = TargetNode targetName newTargetSubtrees
 
         -- New version of currentTrees (the forest) with the trees that are inserted 
@@ -75,24 +75,36 @@ generateTargetForest currentTrees (target : targets) =
     if nameInRoots
     then 
         let
-            -- Helper function to modify one of the trees in newForest:
+            -- Helper function to modify ONE of the trees in newForest:
             -- Note: we append newTargetSubtrees in the front since targets show up
             -- in reverse order.
             modificationFunc :: TargetTree -> TargetTree
-            modificationFunc tree = if getTargetName tree == targetName 
-                then TargetNode targetName (newTargetSubtrees ++ getTargetDeps tree)
-                else tree
+            modificationFunc (TargetNode tName tDeps) = if tName == targetName 
+                then TargetNode tName (newTargetSubtrees ++ tDeps)
+                else TargetNode tName tDeps
         in
-        generateTargetForest (map modificationFunc newForest) targets  -- Case 2
+        -- Case 2:
+        generateTargetForest (map modificationFunc newForest) targets
     else 
         if nameInForest
         then 
             let 
+                -- Helper function to modify ONE of the trees in newForest:
+                -- We recursively traverse down to the leaves, and modify the
+                -- subtrees only as we go up a layer. The subtrees are to be 
+                -- modified, then the root tree.
                 modificationFunc :: TargetTree -> TargetTree
-                modificationFunc tree = tree  -- TODO: modify deps of all targetName subtrees
+                modificationFunc (TargetNode tName []) = if tName == targetName 
+                    then TargetNode tName newTargetSubtrees
+                    else TargetNode tName []
+                modificationFunc (TargetNode tName tDeps) = if tName == targetName
+                    then TargetNode tName (newTargetSubtrees ++ map modificationFunc tDeps)
+                    else TargetNode tName (map modificationFunc tDeps)
             in 
-            generateTargetForest (map modificationFunc newForest) targets  -- Case 3
-        else generateTargetForest (newTargetTree : newForest) targets  -- Case 1
+            -- Case 3: 
+            generateTargetForest (map modificationFunc newForest) targets
+        -- Case 1:
+        else generateTargetForest (newTargetTree : newForest) targets
 
 -- | Helper function for generateTargetForest, returns whether a target is in a forest.
 targetNameInForest :: String -> [TargetTree] -> Bool
