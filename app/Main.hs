@@ -4,8 +4,8 @@ import System.Directory (doesFileExist)
 -- import System.Environment (getArgs)
 
 import Parsing.TargetParsing (getAllTargets)
-import Conversion.TargetForestGeneration (getTargetForest)
-import Conversion.Visualize (getDepTreeString)
+import TargetForestGeneration (getTargetForest)
+import Visualize (getDepTreeString)
 
 
 -- | Entrypoint of application.

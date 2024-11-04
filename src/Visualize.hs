@@ -1,8 +1,8 @@
-module Conversion.Visualize (getDepTreeString) where
+module Visualize (getDepTreeString) where
 
 import Data.List (intercalate)
 
-import Conversion.TargetForestGeneration (TargetTree(..))
+import TargetForestGeneration (TargetTree(..))
 
 
 -- | Generates a multi-line string that visualizes a target forest, given
