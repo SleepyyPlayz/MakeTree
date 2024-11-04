@@ -25,11 +25,11 @@ source-repository head
 
 library
   exposed-modules:
+      Conversion.TargetForestGeneration
+      Conversion.Visualize
       Parsing.PhonyParsing
       Parsing.TargetParsing
       Parsing.VarParsing
-      TargetForestGeneration
-      Visualize
   other-modules:
       Paths_MakeTree
   hs-source-dirs:

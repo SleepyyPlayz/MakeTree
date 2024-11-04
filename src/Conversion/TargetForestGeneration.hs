@@ -1,5 +1,5 @@
-module TargetForestGeneration (
-    TargetTree, getTargetName, getTargetDeps,
+module Conversion.TargetForestGeneration (
+    TargetTree(..), getTargetName, getTargetDeps,
     getTargetForest,
 ) where
 
