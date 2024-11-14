@@ -36,7 +36,9 @@ library
       src
   ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints
   build-depends:
-      base >=4.7 && <5
+      HUnit
+    , QuickCheck
+    , base >=4.7 && <5
     , directory >=1.3.8.5
   default-language: Haskell2010
 
@@ -48,7 +50,9 @@ executable make-tree
       app
   ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints -threaded -rtsopts -with-rtsopts=-N
   build-depends:
-      MakeTree
+      HUnit
+    , MakeTree
+    , QuickCheck
     , base >=4.7 && <5
     , directory >=1.3.8.5
   default-language: Haskell2010
@@ -57,12 +61,19 @@ test-suite make-tree-test
   type: exitcode-stdio-1.0
   main-is: Spec.hs
   other-modules:
+      ParsingTest.PhonyParsingTest
+      ParsingTest.TargetParsingTest
+      ParsingTest.VarParsingTest
+      TargetForestGenerationTest
+      VisualizeTest
       Paths_MakeTree
   hs-source-dirs:
       test
   ghc-options: -Wall -Wcompat -Widentities -Wincomplete-record-updates -Wincomplete-uni-patterns -Wmissing-export-lists -Wmissing-home-modules -Wpartial-fields -Wredundant-constraints -threaded -rtsopts -with-rtsopts=-N
   build-depends:
-      MakeTree
+      HUnit
+    , MakeTree
+    , QuickCheck
     , base >=4.7 && <5
     , directory >=1.3.8.5
   default-language: Haskell2010

@@ -22,6 +22,8 @@ description:         Please see the README on GitHub at <https://github.com/Slee
 dependencies:
 - base >= 4.7 && < 5
 - directory >= 1.3.8.5
+- HUnit
+- QuickCheck
 
 ghc-options:
 - -Wall
